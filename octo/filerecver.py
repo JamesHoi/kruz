@@ -59,7 +59,7 @@ def analyze_struct(head):
     return head_type, length
 
 
-def file_safe(file_data, file_path):
+def file_save(file_data, file_path):
     """
     接收文件并保存
     :param file_data: 文件数据
@@ -72,7 +72,7 @@ def file_safe(file_data, file_path):
         file.close()
         return True
     except:
-        print("Can't safe " + file_path + "!")
+        print("Can't save " + file_path + "!")
         return False
 
 
