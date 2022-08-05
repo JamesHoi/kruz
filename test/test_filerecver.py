@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-import octo.filetransfer.filerecver as recver
-import pytest
+import octo.filerecver as recver
 
 
 def test_recv():
