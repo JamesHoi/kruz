@@ -73,6 +73,13 @@ setup(
     # by commas, to be used to assist searching for the distribution in a
     # larger catalog.
     keywords="filetransfer, p2p",  # Optional
+
+    entry_points={
+        'console_scripts': [
+            'octo = octo:main'
+        ]
+    },
+
     # You can just specify package directories manually here if your project is
     # simple. Or you can use find_packages().
     #
