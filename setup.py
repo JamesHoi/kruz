@@ -76,7 +76,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'octo = octo:main'
+            'octo = octo:__main__.main',
         ]
     },
 
