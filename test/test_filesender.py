@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-import octo.filetransfer.filesender as sender
-import pytest
+import octo.filesender as sender
 
 
 def test_send():
