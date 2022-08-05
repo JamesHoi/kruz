@@ -1,2 +1,2 @@
 # octo
-hello james £¿
+a command line p2p file transfer
