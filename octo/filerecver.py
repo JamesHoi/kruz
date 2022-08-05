@@ -88,7 +88,7 @@ def recv_file(port, file_path='./temp_file'):
     head_type, length = analyze_struct(head)
     if head_type == b'\x00':  # 接收文件
         file_data = c.recv(length)
-        file_safe(file_data, file_path)
+        file_save(file_data, file_path)
         print("Recv " + str(length) + " bytes!")
         return True
     else:
