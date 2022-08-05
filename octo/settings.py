@@ -3,4 +3,6 @@
 DEFAULTS = {}
 DEFAULTS['debug'] = False
 DEFAULTS['src_ip'] = '0.0.0.0'
-DEFAULTS['src_port'] = 54320
+DEFAULTS['src_port'] = 19302
+DEFAULTS['stun_ip'] = 'stun.l.google.com'
+DEFAULTS['stun_port'] = 19302
