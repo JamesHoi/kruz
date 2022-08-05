@@ -21,7 +21,7 @@ def show_info(src_ip,src_port):
     for i in range(len(lan_ips)):
         print(f'LAN {i} IP:Port: {lan_ips[i]}:{src_port}')
 
-def show_action(a):
+def show_action():
     class customAction(argparse.Action):
         def __call__(self, parser, args, values=None, option_string=None):
             show_info(args.src_ip,args.src_port)
@@ -34,7 +34,7 @@ def main():
     parser = argparse.ArgumentParser(description='A command line p2p file transfer')
     parser.add_argument('-v', '--version', help='version 版本信息',action='version',version='octo v'+__version__)
     parser.add_argument('-d', '--debug', help='debug 显示调试信息', action="store_true",default=DEFAULTS['debug'])
-    parser.add_argument('-s', '--show', help='show 显示本机信息', action=show_action("123"),nargs=0)
+    parser.add_argument('-s', '--show', help='show 显示本机信息', action=show_action(),nargs=0)
     parser.add_argument('-p', '--src_port', help='port to listen on for sender 本机端口', type=int, default=DEFAULTS['src_port'])
     parser.add_argument('-i', '--src_ip', help='network interface for sender 本机IP', default=DEFAULTS['src_ip'])
     parser.add_argument('-P', '--dst_port', type=int,help='destination port which send file 目的端口')
