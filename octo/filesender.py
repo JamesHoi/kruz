@@ -78,10 +78,34 @@ def file_open(file_path):
         sys.exit(-1)
 
 
-def send_file(port, file_path):
+# def send_file(port, file_path):
+#     """
+#     发送文件
+#     :param port: 目标主机端口
+#     :param file_path: 要发送的文件的路径
+#     :return: 发送结果
+#     """
+#     file_data = file_open(file_path)
+#     send_data = init_struct(b'\x00', len(file_data))
+#     print(len(send_data))
+#     # send_data += file_data
+#     s = init_sender(port)
+#     try:
+#         data, address = s.recvfrom(10)
+#         assert data == b'hello octo'
+#         print(address)
+#         s.sendto(send_data, address)
+#         data, address = s.recvfrom(7)
+#         assert data == b'head ok'
+#         s.sendto(file_data, address)
+#         return True
+#     except:
+#         return False
+
+def send_file(socket, file_path):
     """
     发送文件
-    :param port: 目标主机端口
+    :param socket: socket对象
     :param file_path: 要发送的文件的路径
     :return: 发送结果
     """
@@ -89,7 +113,7 @@ def send_file(port, file_path):
     send_data = init_struct(b'\x00', len(file_data))
     print(len(send_data))
     # send_data += file_data
-    s = init_sender(port)
+    s = socket
     try:
         data, address = s.recvfrom(10)
         assert data == b'hello octo'
