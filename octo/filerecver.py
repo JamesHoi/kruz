@@ -6,23 +6,37 @@ import sys
 import struct
 
 
-def init_recver(port):
+# def init_recver(port):
+#     """
+#     初始化建立TCP连接
+#     :param ip: 目标主机ip
+#     :param port: 目标主机端口
+#     :return: socket连接对象
+#     """
+#     try:
+#         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#         s.bind(("0.0.0.0", port))  # 绑定端口
+#         s.listen(5)  # 等待客户端连接
+#         c, addr = s.accept()  # 建立客户端连接
+#         print('连接地址：', addr)
+#     except socket.error as msg:
+#         print(msg)
+#         sys.exit(1)
+#     return c
+def init_recver(ip, port):
     """
-    初始化建立TCP连接
+    初始化建立UDP连接（客户端）
     :param ip: 目标主机ip
     :param port: 目标主机端口
-    :return: socket连接对象
+    :return: socket对象
     """
     try:
-        s = socket.socket()  # 创建 socket 对象
-        s.bind(("0.0.0.0", port))  # 绑定端口
-        s.listen(5)  # 等待客户端连接
-        c, addr = s.accept()  # 建立客户端连接
-        print('连接地址：', addr)
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect((ip, port))
     except socket.error as msg:
         print(msg)
         sys.exit(1)
-    return c
+    return s
 
 
 def init_struct(head_type, file_len):
@@ -76,18 +90,24 @@ def file_save(file_data, file_path):
         return False
 
 
-def recv_file(port, file_path='./temp_file'):
+def recv_file(ip, port, file_path='./temp_file'):
     """
     接收文件
+    :param ip: 主机ip
     :param port: 主机端口
     :param file_path: 保存的文件的路径(默认是 ./temp_file )
     :return: 接收文件的结果
     """
-    c = init_recver(port)
-    head = c.recv(8)  # 接收报文头
+    c = init_recver(ip, port)
+    address = (ip, port)
+    c.sendto(b'hello octo', address)
+    head, temp = c.recvfrom(8)  # 接收报文头
+    print(head)
     head_type, length = analyze_struct(head)
     if head_type == b'\x00':  # 接收文件
-        file_data = c.recv(length)
+        c.sendto(b'head ok', address)
+        file_data, temp = c.recvfrom(length)
+        print(file_data)
         file_save(file_data, file_path)
         print("Recv " + str(length) + " bytes!")
         return True
