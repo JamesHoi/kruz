@@ -2,13 +2,20 @@
 # -*- coding: UTF-8 -*-
 
 import argparse
-from email import parser
 import socket
-import stun
-from octo.__version__ import __version__
-from settings import DEFAULTS
+import time
 
-def show_info(src_ip,src_port):
+import octo.stun as stun
+from octo import file_transfer_tcp as ft
+from octo.__version__ import __version__
+from octo.settings import DEFAULTS
+
+
+def show_info(src_ip,src_port,enable_ipv6=True):
+    if socket.has_dualstack_ipv6() and enable_ipv6:
+        ipv6 = socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET6)[1][4][0]
+        print("Your Computer is supported IPv6.")
+        print(f'IPv6 IP:Port: {ipv6}:{src_port}')
     nat_type, external_ip, external_port = stun.get_ip_info(
         src_ip, src_port,
         stun_host=DEFAULTS['stun_ip'],
@@ -19,6 +26,8 @@ def show_info(src_ip,src_port):
     for i in range(len(lan_ips)):
         print(f'LAN {i} IP:Port: {lan_ips[i]}:{src_port}')
 
+def show_command_tips():
+    pass
 
 def arg_parse(parser,args):
     if args.show:
@@ -28,10 +37,15 @@ def arg_parse(parser,args):
         parser.exit()
     elif args.dst_ip and args.dst_port:
         print(f'Recving file from {args.dst_ip}:{args.dst_port}')
+        tmp = time.time()
+        ft.run_client(args.dst_ip,args.dst_port)
+        print(f'File recved, cost {time.time()-tmp}s')
         parser.exit()
+        
 
 def run(args):
-    print(args.filename)
+    show_info(args.src_ip,args.src_port)
+    ft.run_server(args.filename,args.src_port)
 
 def main():
     parser = argparse.ArgumentParser(description='A command line p2p file transfer')
@@ -42,7 +56,7 @@ def main():
     parser.add_argument('-i', '--src_ip', help='network interface for sender 本机IP', default=DEFAULTS['src_ip'])
     parser.add_argument('-P', '--dst_port', type=int,help='destination port which send file 目的端口')
     parser.add_argument('-I', '--dst_ip',help='destination ip which send file 目的IP')
-    parser.add_argument('filename', type=str, nargs='+',
+    parser.add_argument('filename', type=str, nargs='?',
                     help='filename 文件名')
     args = parser.parse_args()
     arg_parse(parser,args)
