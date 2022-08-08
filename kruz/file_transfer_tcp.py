@@ -9,7 +9,7 @@ import os
 import struct
 from tqdm import tqdm
 
-from octo.settings import *
+from kruz.settings import *
 
 def read_file_size(file):
     size = file.seek(0, os.SEEK_END)

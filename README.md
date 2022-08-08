@@ -1,4 +1,4 @@
-# octo
+# kruz
 
 a command line p2p file transfer
 
@@ -11,6 +11,6 @@ a command line p2p file transfer
 
 ```bash
 pip install pytest pytest-xdist
-cd octo
+cd kruz
 pytest
 ```

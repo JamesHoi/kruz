@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-import octo.file_transfer_tcp as ft
+import kruz.file_transfer_tcp as ft
 
 PORT = 19302
 

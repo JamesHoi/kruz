@@ -5,10 +5,10 @@ import argparse
 import socket
 import time
 
-import octo.stun as stun
-from octo import file_transfer_tcp as ft
-from octo.__version__ import __version__
-from octo.settings import DEFAULTS
+import kruz.stun as stun
+from kruz import file_transfer_tcp as ft
+from kruz.__version__ import __version__
+from kruz.settings import DEFAULTS
 
 
 def show_info(src_ip,src_port,enable_ipv6=True):
@@ -49,7 +49,7 @@ def run(args):
 
 def main():
     parser = argparse.ArgumentParser(description='A command line p2p file transfer')
-    parser.add_argument('-v', '--version', help='version 版本信息',action='version',version='octo v'+__version__)
+    parser.add_argument('-v', '--version', help='version 版本信息',action='version',version='kruz v'+__version__)
     parser.add_argument('-d', '--debug', help='debug 显示调试信息', action="store_true",default=DEFAULTS['debug'])
     parser.add_argument('-s', '--show', help='show 显示本机信息', action='store_true')
     parser.add_argument('-p', '--src_port', help='port to listen on for sender 本机端口', type=int, default=DEFAULTS['src_port'])
