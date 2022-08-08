@@ -5,7 +5,7 @@ import argparse
 import socket
 import time
 
-import kruz.stun as stun
+import stun
 from kruz import file_transfer_tcp as ft
 from kruz.__version__ import __version__
 from kruz.settings import DEFAULTS
