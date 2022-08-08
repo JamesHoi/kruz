@@ -2,7 +2,7 @@ import socket
 import threading
 
 PORT = 19302
-TEST_FILE_PATH = './tests/send_test_file'
+TEST_FILE_PATH = './tests/test_file'
 
 def test_ipv6_server():
     addr = ("", PORT)
