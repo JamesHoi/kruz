@@ -32,3 +32,9 @@ cd kruz & python setup.py install
 pip install pytest pytest-xdist
 cd kruz & pytest
 ```
+
+## TODO
+1. accomplish communication using udp protocol
+2. hole puching
+3. multi-thread sharing
+4. send folder
