@@ -1,5 +1,5 @@
 # kruz 
-kruz is a command line p2p file transfer
+kruz is a command line p2p file transfer tool
 ```bash
 > kruz share file.txt
 Share server started, waiting for client...
@@ -34,7 +34,9 @@ cd kruz & pytest
 ```
 
 ## TODO
-1. accomplish communication using udp protocol
-2. hole puching
-3. multi-thread sharing
-4. send folder
+1. show all ipv6 address
+2. ctrl+c to cancel sharing
+3. accomplish communication using udp protocol
+4. hole puching
+5. multi-thread sharing
+5. send folder
