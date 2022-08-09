@@ -110,6 +110,7 @@ setup(
 
     tests_require = [
         'pytest',
+        'pytest-xdist'
     ],
     # List additional URLs that are relevant to your project as a dict.
     #
