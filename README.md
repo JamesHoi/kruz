@@ -30,6 +30,5 @@ cd kruz & python setup.py install
 
 ```bash
 pip install pytest pytest-xdist
-cd kruz
-pytest
+cd kruz & pytest
 ```
