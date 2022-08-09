@@ -3,10 +3,12 @@
 #       tcp hole punching like bt software
 #       multi-threading sharing
 #       tcp keep alive
+#       tcp send computer info
 
 import socket
 import os
 import struct
+import time
 from tqdm import tqdm
 
 from kruz.settings import *
@@ -45,12 +47,16 @@ def send_file(s,file):
             length)
     s.send(head)
     s.send(name.encode("utf-8"))
-    s.sendfile(file)
+    progress = tqdm(total=length,unit='B', unit_divisor=CHUNK_SIZE,unit_scale=True,desc=name)
+    for _ in range(length//CHUNK_SIZE):
+        progress.update(CHUNK_SIZE)
+        s.send(file.read(CHUNK_SIZE))
+    s.send(file.read(length%CHUNK_SIZE))
 
-def run_server(filename,port,ipv6=True):
+def run_server(filename,port,enable_ipv6=True):
     f = open(filename,"rb")
     addr = ("", port)
-    if socket.has_dualstack_ipv6() and ipv6:
+    if socket.has_dualstack_ipv6() and enable_ipv6:
         s = socket.create_server(addr, family=socket.AF_INET6, dualstack_ipv6=True)
     else:
         s = socket.create_server(addr)
@@ -59,27 +65,38 @@ def run_server(filename,port,ipv6=True):
     s.listen(5)
     while True:
         c, addr = s.accept()
+        print("Connected from", addr)
         send_file(c,f)
         break
 
-def run_client(ip,port):
-    if socket.has_dualstack_ipv6() and ":" in ip:
-        s = socket.socket(family=socket.AF_INET6)
-        s.connect((ip, port, 0, 0))
-    else:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ip, port))
+def run_client(ip,port,filename=None):
+    try:
+        ipv6 = socket.has_dualstack_ipv6()
+        if not ipv6 and ":" in ip: 
+            raise Exception("IPv6 is not supported")
+        if ipv6 and ":" in ip:
+            s = socket.socket(family=socket.AF_INET6)
+            s.connect((ip, port, 0, 0))
+        else:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((ip, port))
+    except ConnectionRefusedError as e:
+        print("Cannot connect to peer")
+        return False
     
+    print("Connected to peer {}:{}".format(ip,port))
     # analyze head
     head = s.recv(8)
     head_type, filename_length, length = struct.unpack('<2s2sI', head)
     if head_type == b'\x00\x00':
         tmp = int.from_bytes(filename_length, byteorder="little")
-        filename = s.recv(tmp).decode()
+        filename = s.recv(tmp).decode() if filename == None else filename
         f = open(filename,"wb")
         progress = tqdm(total=length,unit='B', unit_divisor=CHUNK_SIZE,unit_scale=True,desc=filename)
         for _ in range(length//CHUNK_SIZE):
             progress.update(CHUNK_SIZE)
-            f.write(s.recv(CHUNK_SIZE))
+            f.write(s.recv(CHUNK_SIZE,socket.MSG_WAITALL))
+        f.write(s.recv(length%CHUNK_SIZE,socket.MSG_WAITALL))
         f.close()
-    assert True
+        s.close()
+    return True
