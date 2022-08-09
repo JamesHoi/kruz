@@ -15,10 +15,8 @@ file.txt: 100%|█████████████████████�
 File recved, cost 0.7420966625213623s
 ```
 
-[![Supported Versions](https://img.shields.io/pypi/pyversions/kruz.svg)](https://pypi.org/project/kruz)
-
 ## Install
-Require python>=3.8
+[![Supported Versions](https://img.shields.io/pypi/pyversions/kruz.svg)](https://pypi.org/project/kruz) Require python>=3.8
 ```bash
 pip install kruz
 ```
