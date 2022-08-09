@@ -127,11 +127,7 @@ Show info:  kruz check"""
     parser_send.add_argument('--short',help='short link 生成提取码',action='store_true',default=DEFAULTS['short-link'])
     parser_send.add_argument('filename', type=str, nargs='*',help='filename 文件名')
 
-    try:
-        args = parser.parse_args()
-    except:
-        if args.key == None:
-            return
+    args = parser.parse_args()
     if args.cmd == 'share':
         share(args)
     elif args.cmd == 'recv':
