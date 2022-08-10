@@ -39,4 +39,5 @@ cd kruz & pytest
 3. accomplish communication using udp protocol
 4. hole puching
 5. multi-thread sharing
-5. send folder
+6. nat type from pystun is incorrect
+6. send folder
